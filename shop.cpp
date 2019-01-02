@@ -18,6 +18,7 @@ int main (int argc, char *argv[]){
 
     std::cout << "-----------------" << std::endl;
     Message sent("romain romain romain romain");
+    sent.author.name = std::string("tcp://localhost:5551");
 	resource_cursor_type hey = rm.add_value(sent);
 	resource_cursor_type nbocur = rm.add_value(0);
     std::cout << "Running counting occurences task" << std::endl;

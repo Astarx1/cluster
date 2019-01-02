@@ -12,13 +12,13 @@
 
 class Market : public Networker {
 public:
-	Market() : context(1) {
-		publish_offers = std::string("publish_offers");
+	Market() : context(1), m_me("tcp://localhost:5551") {
+		publish_offers = std::string("tcp://localhost:5550");
 		sockets.insert(std::pair<std::string,zmq::socket_t>(publish_offers, zmq::socket_t(context, ZMQ_PUB)));
 		(sockets.find(publish_offers)->second).bind("tcp://*:5550");
 		std::cout << "Port 5550 ready to make offers" << std::endl;
 
-		receive_deliveries = std::string("receive_deliveries");
+		receive_deliveries = std::string("tcp://localhost:5551");
 		sockets.insert(std::pair<std::string,zmq::socket_t>(receive_deliveries, zmq::socket_t(context, ZMQ_PULL)));
 		(sockets.find(receive_deliveries)->second).bind("tcp://*:5551");
 		std::cout << "Port 5551 ready to receive handshakes" << std::endl;
@@ -60,7 +60,7 @@ public:
 			        Message smessage(introduction);
 			        workers.push_back(smessage.message);
 	        		std::cout << "New worker : " << smessage.author.adr << std::endl;
-	        		send(Address(publish_offers), Message(std::string("New worker !")));
+	        		send(Address(smessage.author.adr), Message(std::string("New worker !")), true);
 			    }
 			    catch (...) {
 			    	std::cout << "Error when adding new worker" << std::endl;
@@ -70,12 +70,18 @@ public:
 		}
 	}
 
-	Message send(Address adr, Message msg) {
+	Message send(Address adr, Message msg, bool pub_delivery=false) {
 		if (msg.type == 0) {
-		    zmq::message_t message(msg.message.size());
-		    memcpy(message.data(), msg.message.c_str(), msg.message.size());
-		    std::cout << "Sending message " << msg.message << " to socket " << adr.adr << std::endl;
-			(sockets.find(adr.adr)->second).send(message);
+			msg.author = m_me;
+			msg.destination = adr;
+			std::string msg2send = msg.construct_message();
+		    zmq::message_t message(msg2send.size());
+		    memcpy(message.data(), msg2send.c_str(), msg2send.size());
+		    std::cout << "Mailbox : Sending '" << msg2send << "' to '" << adr.name << "'" << std::endl;
+		    if (!pub_delivery)
+				(sockets.find(adr.name)->second).send(message);
+		    else
+				(sockets.find(publish_offers)->second).send(message);
 			return Message();
 		}
 	}
@@ -98,6 +104,8 @@ public:
 	int wait_ms = 10;
 	std::thread market_mng_thread;
 	std::deque<std::string> workers;
+
+	Address m_me;
 };
 
 #endif

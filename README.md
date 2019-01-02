@@ -2,6 +2,7 @@ Do not forget to install libzmq3-dev before running
 
 
 TODO :
+- Git Workflow
 - Data sharing between workers protocole ("data sales")
 	- In link with the file transfer protocole
 	- Need to chose a format to exchange data
@@ -9,7 +10,9 @@ TODO :
 	- If possible, workers must be launchable from master
 	- Ports should at least be decided by the user after CLI launching
 - Unit Testing !!!
-- Python Bindings (MLFactory)
+- Python Bindings (especially in MLManagement)
+	- Link to mapreduce paradigm, I can try to hack my way into it https://stackoverflow.com/questions/11016078/is-it-possible-to-create-a-function-dynamically-during-runtime-in-c
+	- The best solution remains to manipulate data structures even if it be less flexible
 - Refactoring :
 	- more namespaces !!!
 	- Separation declarations/definitions
@@ -22,6 +25,7 @@ TODO :
 - Better network management/resilience
 	- Acknowledgement support
 	- Message answer support
+	- Make a better use of topic system provided by ZMQ Publish/Subscribe in order to filter out unintersting messages with better performances (reduce the need to parse messages on an application level)
 - Better non-concurrency between workers support ? Master should have the last word but nonetheless, it seems quite shaky
 	- Paxos-like algorithm for decision ? (seems overkill)
 - Mailbox shared between multiple thread to add more if needed (like during a data transfer)
@@ -88,3 +92,28 @@ A value of the operation concerned. A few are reserved :
 - 7 : Secure message
 	- 70 : Secure Handshake (authentification + key exchange)
 	- 71 : [Data] contains the message to decrypt 
+
+
+Cluster Definition example
+machines:
+	- name: PC1
+	  user: dummy_user
+	  password: dummy_pwd
+	  ip: 192.168.1.10
+	  services:
+	  	- name: master
+	  	  publish_port: 5550
+	  	  port: 5551
+	  	  master: true
+	    - name: worker1
+	  	  port: 5552
+	- name: PC2
+	  user: dummy_user
+	  password: dummy_pwd
+	  ip: 192.168.1.11
+	  services:
+	    - name: worker1
+	  	  port: 5552
+	    - name: worker2
+	  	  port: 5553
+

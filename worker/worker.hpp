@@ -14,18 +14,18 @@
 class MailBox : public Networker {
 public:
 	MailBox() : context(1), m_me("tcp://localhost:5552") {
-		std::string read_market("read_market");
+		std::string read_market("tcp://localhost:5550");
 		sockets.insert(std::pair<std::string,zmq::socket_t>(read_market, zmq::socket_t(context, ZMQ_SUB)));
-		(sockets.find(read_market)->second).connect("tcp://localhost:5550");
+		(sockets.find(read_market)->second).connect(read_market);
 		(sockets.find(read_market)->second).setsockopt(ZMQ_SUBSCRIBE, "", 0);
 		std::cout << "Port 5550 is ready to read offers in the market" << std::endl;
 
-		std::string send_market("send_market");
+		std::string send_market("tcp://localhost:5551");
 		sockets.insert(std::pair<std::string,zmq::socket_t>(send_market, zmq::socket_t(context, ZMQ_PUSH)));
-		(sockets.find(send_market)->second).connect("tcp://localhost:5551");
+		(sockets.find(send_market)->second).connect(send_market);
 		std::cout << "Port 5551 is ready to send handshakes" << std::endl;
 		
-		std::string publish_deliveries("publish_deliveries");
+		std::string publish_deliveries("tcp://localhost:5552");
 		sockets.insert(std::pair<std::string,zmq::socket_t>(publish_deliveries, zmq::socket_t(context, ZMQ_PUB)));
 		(sockets.find(publish_deliveries)->second).bind("tcp://*:5552");
 		std::cout << "Port 5552 is ready to deliver" << std::endl;
@@ -56,7 +56,7 @@ public:
 	}
 
 	void answer_offers() {
-		std::string read_market("read_market");
+		std::string read_market("tcp://localhost:5550");
 		int val = -1;
 	  	zmq::message_t introduction;
 
@@ -83,13 +83,14 @@ public:
 		}		
 	}
 
-	Message send(Address adr, Message msg) {
+	Message send(Address adr, Message msg, bool pub_delivery=false) {
 		if (msg.type == MsgReturnType::NoAnswerNeeded) {
 			msg.author = m_me;
 			msg.destination = adr;
 			std::string msg2send = msg.construct_message();
 		    zmq::message_t message(msg2send.size());
 		    memcpy(message.data(), msg2send.c_str(), msg2send.size());
+		    std::cout << "Mailbox : Sending '" << msg2send << "' to '" << adr.name << "'" << std::endl;
 			(sockets.find(adr.name)->second).send(message);
 			return Message();
 		}

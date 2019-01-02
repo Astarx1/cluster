@@ -19,7 +19,7 @@ public:
 		int a = msg.message.find(" ");
 		std::string word = msg.message.substr(0, a);
 		std::string text = msg.message.substr(a+1);
-		std::string destination = msg.destination.adr;
+		std::string destination = msg.author.name;
 
 		std::cout << "Operation LaunchCountOccurencesWord : Looking for '" << word << "' in : " << text << std::endl;
 		resource_cursor_type rct_word = rm->add_value(word);
@@ -68,6 +68,15 @@ public:
 	void operator() (resource_cursor_type input, resource_cursor_type output, ResourceManager * rm,
 		Networker * communications, OperationPool * operation_pool) {
 		std::cout << "Operation SendOccurencesWordCount : Starting processing" << std::endl;
+		resource_grape_type& grape = rm->get_grape_resource(input);
+
+		std::cout << "Operation SendOccurencesWordCount : Finding variables" << std::endl;
+		int& occu = rm->get_int_resource(grape.find("occu")->second);
+		std::string& dest = rm->get_str_resource(grape.find("dest")->second);
+		
+		std::cout << "Operation SendOccurencesWordCount : sending result" << std::endl;
+		communications->send(Address(dest), Message(std::to_string(occu)));
+		std::cout << "Operation SendOccurencesWordCount : over" << std::endl;
 	}
 };
 

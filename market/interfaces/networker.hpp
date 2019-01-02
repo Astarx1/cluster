@@ -14,7 +14,7 @@ public:
 	Networker() { ; }
 	~Networker() { ; }
 
-	virtual Message send(Address adr, Message msg) = 0;
+	virtual Message send(Address adr, Message msg, bool pub_delivery=false) = 0;
 	virtual void connect_operation_pool(OperationPool * operation_pool) = 0;
 };
 
