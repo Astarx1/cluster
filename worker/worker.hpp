@@ -10,6 +10,7 @@
 #include <map>
 
 #include "interfaces/networker.hpp"
+#include "network_operations/network_operations_list.hpp"
 
 class MailBox : public Networker {
 public:
@@ -72,8 +73,12 @@ public:
 	        if (val >= 0 && introduction.size() > 0) {
 	        	std::cout << "Reading market offers" << std::endl;
 	        	try {
-			        std::string smessage(static_cast<char*>(introduction.data()), introduction.size());
-	        		std::cout << "New worker : " << smessage << std::endl;
+			        Message smessage(introduction);
+			        network_operation_functor * op2do = net_op_list.get_operation(smessage.operation);
+			        (*op2do)(&smessage, this, m_operation_pool, m_operation_pool->get_resource_manager(), &net_op_list);
+			        std::cout << "Actions done" << std::endl;
+			        //std::string smessage(static_cast<char*>(introduction.data()), introduction.size());
+	        		//std::cout << "New worker : " << smessage << std::endl;
 			    }
 			    catch (...) {
 			    	std::cout << "Error when adding new tasks" << std::endl;
@@ -100,6 +105,7 @@ public:
 		m_operation_pool = operation_pool;
 	}
 
+private:
 	std::map<std::string, zmq::socket_t> sockets;
 	zmq::context_t context;
 
@@ -107,6 +113,8 @@ public:
 	std::thread market_mng_thread;
 	bool read_offers;
 	int wait_ms;
+
+	NetworkOperationList net_op_list;
 
 	Address m_me;
 };

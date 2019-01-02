@@ -9,13 +9,14 @@ int main (int argc, char *argv[]){
 	ThreadPool tp(rm);
 	tp.connect_mailbox(&shop);
 
-	std::string filename("test.txt");
-	resource_cursor_type file = rm.add_value(filename);
-	resource_cursor_type nblines = rm.add_value(0);
+	//std::string filename("test.txt");
+	//resource_cursor_type file = rm.add_value(filename);
+	//resource_cursor_type nblines = rm.add_value(0);
 
-    tp.add_task(Task(std::string("GetNBLine"), file, nblines));
+    //tp.add_task(Task(std::string("GetNBLine"), file, nblines));
     tp.run(2);
 
+    /*
     std::cout << "-----------------" << std::endl;
     Message sent("romain romain romain romain");
     sent.author.name = std::string("tcp://localhost:5551");
@@ -24,6 +25,8 @@ int main (int argc, char *argv[]){
     std::cout << "Running counting occurences task" << std::endl;
     tp.add_task(Task(std::string("LaunchCountOccurencesWord"), hey, nbocur));
     std::cout << "-----------------" << std::endl;
+    */
+    
     while(true);
 
     return 0;

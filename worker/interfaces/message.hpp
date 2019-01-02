@@ -39,12 +39,12 @@ typedef struct Message {
 		}
 	}
 
-	MsgReturnType interpret_message_type(std::string) {
+	MsgReturnType interpret_message_type(std::string s) {
 		return MsgReturnType::NoAnswerNeeded;
 	}
 	
-	std::string interpret_message_operation(std::string) {
-		return "None";
+	std::string interpret_message_operation(std::string s) {
+		return s;
 	}
 
 	void message_from_zmq(zmq::message_t& msg) {

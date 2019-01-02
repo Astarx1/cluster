@@ -28,6 +28,7 @@ public:
 		resource_cursor_type resource_input, resource_cursor_type resource_output, bool pending=false) = 0;
 	virtual task_status_type get_status_task(task_cursor_type task) const = 0;
 	virtual void connect_mailbox(Networker * w) = 0;
+	virtual ResourceManager * get_resource_manager() = 0;
 };
 
 #endif

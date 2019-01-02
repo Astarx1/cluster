@@ -74,6 +74,10 @@ public:
 		w->connect_operation_pool(this);
 	}
 
+	ResourceManager * get_resource_manager() {
+		return & m_resource_manager;
+	}
+
 private:
 	TaskList m_tl;
 	ResourceManager& m_resource_manager;

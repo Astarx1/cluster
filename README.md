@@ -3,6 +3,7 @@ Do not forget to install libzmq3-dev before running
 
 TODO :
 - Git Workflow
+- Network operations aka different process for messages with different OperationID
 - Data sharing between workers protocole ("data sales")
 	- In link with the file transfer protocole
 	- Need to chose a format to exchange data
