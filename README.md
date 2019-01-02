@@ -8,6 +8,7 @@ TODO :
 - Dynamic deployement : workers must get defined by a YAML-like file
 	- If possible, workers must be launchable from master
 	- Ports should at least be decided by the user after CLI launching
+- Unit Testing !!!
 - Python Bindings (MLFactory)
 - Refactoring :
 	- more namespaces !!!
@@ -42,6 +43,8 @@ TODO :
 - Lighten messages
 	- E.g : version is currently defined by an integer between message beginning and first comma > Reduce int to the n first bits
 	- Identifiers are still the URL of the worker > an ID should be attributed at handshake in order just to send some bits
+- Make possible for a worker to jump from a task to another even if the task is not over
+	- E.g : When receiving data, it may be slower than the processing of the data. Therefore performance could be gained by giving a "worker back" in while(not_over) kind of loop if the loop has iterated many times without receiving anything 
 - UTF-8 message support
 - Multi OS Support
 - System commands launching from operations
