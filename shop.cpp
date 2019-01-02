@@ -15,9 +15,9 @@ int main (int argc, char *argv[]){
         local_port = std::string("5552");
     }
     else {
-        std::string master_pub = std::string(argv[1]);
-        std::string master_pull = std::string(argv[2]);
-        std::string local_port = std::string(argv[3]);
+        master_pub = std::string(argv[1]);
+        master_pull = std::string(argv[2]);
+        local_port = std::string(argv[3]);
     }
 
     MailBox shop(master_pub, master_pull, local_port);
