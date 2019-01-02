@@ -4,29 +4,29 @@
 
 
 int main (int argc, char *argv[]){
-    MailBox shop;
-	ResourceManager rm;
-	ThreadPool tp(rm);
-	tp.connect_mailbox(&shop);
+    std::string master_pub;
+    std::string master_pull;
+    std::string local_port;
 
-	//std::string filename("test.txt");
-	//resource_cursor_type file = rm.add_value(filename);
-	//resource_cursor_type nblines = rm.add_value(0);
+    if (argc < 3) {
+        std::cout << "Auto-config" << std::endl;
+        master_pub = std::string("tcp://localhost:5550");
+        master_pull = std::string("tcp://localhost:5551");
+        local_port = std::string("5552");
+    }
+    else {
+        std::string master_pub = std::string(argv[1]);
+        std::string master_pull = std::string(argv[2]);
+        std::string local_port = std::string(argv[3]);
+    }
 
-    //tp.add_task(Task(std::string("GetNBLine"), file, nblines));
+    MailBox shop(master_pub, master_pull, local_port);
+    ResourceManager rm;
+    ThreadPool tp(rm);
+    tp.connect_mailbox(&shop);
+
     tp.run(2);
 
-    /*
-    std::cout << "-----------------" << std::endl;
-    Message sent("romain romain romain romain");
-    sent.author.name = std::string("tcp://localhost:5551");
-	resource_cursor_type hey = rm.add_value(sent);
-	resource_cursor_type nbocur = rm.add_value(0);
-    std::cout << "Running counting occurences task" << std::endl;
-    tp.add_task(Task(std::string("LaunchCountOccurencesWord"), hey, nbocur));
-    std::cout << "-----------------" << std::endl;
-    */
-    
     while(true);
 
     return 0;

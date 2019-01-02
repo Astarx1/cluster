@@ -77,11 +77,15 @@ public:
 			std::string msg2send = msg.construct_message();
 		    zmq::message_t message(msg2send.size());
 		    memcpy(message.data(), msg2send.c_str(), msg2send.size());
-		    std::cout << "Mailbox : Sending '" << msg2send << "' to '" << adr.name << "'" << std::endl;
-		    if (!pub_delivery)
+		    if (!pub_delivery) {
+		    	std::cout << "Mailbox : Sending '" << msg2send << "' to '" << adr.name << "'" << std::endl;
 				(sockets.find(adr.name)->second).send(message);
-		    else
+		    }
+		    else {
+
+			    std::cout << "Mailbox : Sending '" << msg2send << "' to all" << std::endl;
 				(sockets.find(publish_offers)->second).send(message);
+		    }
 			return Message();
 		}
 	}

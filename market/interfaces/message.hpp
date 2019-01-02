@@ -29,13 +29,15 @@ typedef struct Message {
 
 	std::string construct_message() {
 		int ack = (type == MsgReturnType::NoAnswerNeeded ? 0 : 1);
+		if (operation.size() < 1)
+			operation = std::string("0");
 		if (version == 0) {
 			return std::to_string(version) + ',' + author.adr + ',' + destination.adr + ',' + 
-				   std::to_string(message_number) + ',' + std::to_string(ack) + ',' + message;
+				   std::to_string(message_number) + ',' + std::to_string(ack) + ',' + operation + ',' + message;
 		}
 		else {
 			return std::to_string(version) + ',' + author.adr + ',' + destination.adr + ',' + 
-				   std::to_string(message_number) + ',' + std::to_string(ack) + ',' + message;
+				   std::to_string(message_number) + ',' + std::to_string(ack) + ',' + operation + ',' + message;
 		}
 	}
 

@@ -2,33 +2,30 @@ Do not forget to install libzmq3-dev before running
 
 
 TODO :
-- Git Workflow
-- Network operations aka different process for messages with different OperationID
+- Mutexed stdout 
 - Data sharing between workers protocole ("data sales")
+	- Enable the operation
 	- In link with the file transfer protocole
 	- Need to chose a format to exchange data
 - Dynamic deployement : workers must get defined by a YAML-like file
 	- If possible, workers must be launchable from master
 	- Ports should at least be decided by the user after CLI launching
-- Unit Testing !!!
+	- I need a mock dynamic environnement (probably Pythonicly defined, Chef or other pipelines will come later) in order to test it
+- Reduce Tech Debt !!!
+	- Unit Testing 
+	- Git Workflow
+	- Refactoring :
+		- more namespaces !!!
+		- Separation declarations/definitions
+		- Inclusions refactoring (it is a HUGE mess)
+		- CMake build
 - Python Bindings (especially in MLManagement)
 	- Link to mapreduce paradigm, I can try to hack my way into it https://stackoverflow.com/questions/11016078/is-it-possible-to-create-a-function-dynamically-during-runtime-in-c
 	- The best solution remains to manipulate data structures even if it be less flexible
-- Refactoring :
-	- more namespaces !!!
-	- Separation declarations/definitions
-	- Inclusions refactoring (it is a HUGE mess)
-	- CMake build
 - Task dependencies management (in progress) > Essential for load management
 - Memory management :
 	- Virtual/Physical Memory management > Near-to Essential for real load management
 	- Collision prevention between workers for data shared > Essential 
-- Better network management/resilience
-	- Acknowledgement support
-	- Message answer support
-	- Make a better use of topic system provided by ZMQ Publish/Subscribe in order to filter out unintersting messages with better performances (reduce the need to parse messages on an application level)
-- Better non-concurrency between workers support ? Master should have the last word but nonetheless, it seems quite shaky
-	- Paxos-like algorithm for decision ? (seems overkill)
 - Mailbox shared between multiple thread to add more if needed (like during a data transfer)
 - File Transfer : 
 	- Use a shared file system like HDFS with a shared hashTable
@@ -37,6 +34,14 @@ TODO :
 	- MapReduce (+ aggreg, combine, flatmap...)
 	- Database management, at least Postgre & Cassandra
 	- Usual math operations
+- Make possible for a worker to jump from a task to another even if the task is not over. COROUTINE STYLE. LET MORDOR (by Mozy) RULE
+	- E.g : When receiving data, it may be slower than the processing of the data. Therefore performance could be gained by giving a "worker back" in while(not_over) kind of loop if the loop has iterated many times without receiving anything 
+- Better network management/resilience
+	- Acknowledgement support
+	- Message answer support
+	- Make a better use of topic system provided by ZMQ Publish/Subscribe in order to filter out unintersting messages with better performances (reduce the need to parse messages on an application level)
+- Better non-concurrency between workers support ? Master should have the last word but nonetheless, it seems quite shaky
+	- Paxos-like algorithm for decision ? (seems overkill)
 - Communication securisation
 - Reward protocole (in link with "better non-concurrency" and "task topology analysis")
 - Possession of resources by tasks : 
@@ -48,8 +53,6 @@ TODO :
 - Lighten messages
 	- E.g : version is currently defined by an integer between message beginning and first comma > Reduce int to the n first bits
 	- Identifiers are still the URL of the worker > an ID should be attributed at handshake in order just to send some bits
-- Make possible for a worker to jump from a task to another even if the task is not over
-	- E.g : When receiving data, it may be slower than the processing of the data. Therefore performance could be gained by giving a "worker back" in while(not_over) kind of loop if the loop has iterated many times without receiving anything 
 - UTF-8 message support
 - Multi OS Support
 - System commands launching from operations
