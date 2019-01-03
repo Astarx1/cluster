@@ -9,6 +9,7 @@
 #include <iostream>
 #include <map>
 
+#include "protected_output.hpp"
 #include "interfaces/networker.hpp"
 #include "network_operations/network_operations_list.hpp"
 
@@ -82,7 +83,7 @@ public:
 			        Message smessage(introduction);
 	        		std::cout << "-- Worker -- Operation : '" << smessage.operation << "'" << std::endl;
 			        network_operation_functor * op2do = net_op_list.get_operation(smessage.operation);
-	        		std::cout << "-- Worker -- Launching OperationB" << std::endl;
+	        		std::cout << "-- Worker -- Launching Operation" << std::endl;
 			        (*op2do)(&smessage, this, m_operation_pool, m_operation_pool->get_resource_manager(), &net_op_list);
 			        std::cout << "Actions done" << std::endl;
 			        //std::string smessage(static_cast<char*>(introduction.data()), introduction.size());
