@@ -2,78 +2,7 @@ Do not forget to install libzmq3-dev before running
 
 
 TODO :
-- Mutexed stdout 
-- Data sharing between workers protocole ("data sales")
-	- Enable the operation
-	- In link with the file transfer protocole
-	- Need to chose a format to exchange data
-- Dynamic deployement : workers must get defined by a YAML-like file
-	- If possible, workers must be launchable from master
-	- Ports should at least be decided by the user after CLI launching
-	- I need a mock dynamic environnement (probably Pythonicly defined, Chef or other pipelines will come later) in order to test it
-- Reduce Tech Debt !!!
-	- Unit Testing 
-	- Git Workflow
-	- Refactoring :
-		- more namespaces !!!
-		- Separation declarations/definitions
-		- Inclusions refactoring (it is a HUGE mess)
-		- CMake build
-	- Compile with -Wall, without warnings (it is Ok, just -Wreorder error remains)
-- Python Bindings (especially in MLManagement)
-	- Link to mapreduce paradigm, I can try to hack my way into it https://stackoverflow.com/questions/11016078/is-it-possible-to-create-a-function-dynamically-during-runtime-in-c
-	- The best solution remains to manipulate data structures even if it be less flexible
-- Memory management :
-	- Task dependencies management (in progress) > Essential for load management
-	- Virtual/Physical Memory management > Near-to Essential for real load management
-	- Collision prevention between workers for data shared > Essential
-	- Going for a faster memory pool structure
-- Getting result from master
-	- IPC communication in case of localhost
-- Mailbox shared between multiple thread to add more if needed (like during a data transfer)
-- File Transfer : 
-	- Use a shared file system like HDFS with a shared hashTable
-	- The API used must be transparent with ResourceManager
-- More operations : 
-	- MapReduce (+ aggreg, combine, flatmap...)
-	- Database management, at least Postgre & Cassandra
-	- Usual math operations
-- Make possible for a worker to jump from a task to another even if the task is not over. COROUTINE STYLE. LET MORDOR (by Mozy) RULE
-	- E.g : When receiving data, it may be slower than the processing of the data. Therefore performance could be gained by giving a "worker back" in while(not_over) kind of loop if the loop has iterated many times without receiving anything 
-- Better network management/resilience
-	- Acknowledgement support
-	- Message answer support
-	- Make a better use of topic system provided by ZMQ Publish/Subscribe in order to filter out unintersting messages with better performances (reduce the need to parse messages on an application level)
-- Better Error management
-	- Including input check
-- Better non-concurrency between workers support ? Master should have the last word but nonetheless, it seems quite shaky
-	- Paxos-like algorithm for decision ? (seems overkill)
-- Communication securisation
-- Reward protocole (in link with "better non-concurrency" and "task topology analysis")
-- Possession of resources by tasks : 
-	- A resource must be destroyed when it is not used anymore
-	- A task must be able to delay resource destruction if
-		- It is handed to another task
-		- It is shared between several parallel tasks
-		- It is an output that can be used by another task
-- Lighten messages
-	- E.g : version is currently defined by an integer between message beginning and first comma > Reduce int to the n first bits
-	- Identifiers are still the URL of the worker > an ID should be attributed at handshake in order just to send some bits
-- UTF-8 message support
-- Multi OS Support
-- System commands launching from operations
-- Command launching from message (in progress) > Essential for cluster management
-	- In the way with the pending task protocole
-- Heartbeats for workers
-- Task progress as float and not just ended or not
-- Result transfer improvement
-- Task Topology analysis
-	- Attribution of a weight to each tasks to improve task repartition
-	- Why not rewrite the TaskPool runner with a directed acyclic graph manager like Taskflowcpp  
-- Support other network protocole
-	- UDP seems important
-	- IPCs seem to offer great performance opportunities (ZMQ natively handles it)
-
+Check https://trello.com/b/6DIQHIpM/cluster
 
 
 Message sent :

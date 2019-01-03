@@ -3,6 +3,7 @@
 
 #include <mutex>
 
+namespace Misc {
 class ProtectedOut {
 public:
 	static void out(const std::string& in) {
@@ -12,6 +13,7 @@ public:
 	}
 
 	static std::mutex no_double;
+};
 };
 
 #endif
