@@ -18,10 +18,14 @@ enum MsgReturnType {
 };
 
 typedef struct Message {
-	Message() : message(""), version(0), message_number(0), type(MsgReturnType::NoAnswerNeeded) { ; }
-	Message(MsgReturnType t, std::string msg) : version(0), message_number(0), type(t), message(msg) { ; }
-	Message(std::string msg) : version(0), message_number(0), type(MsgReturnType::NoAnswerNeeded), message(msg) { ; }
-	Message(zmq::message_t& msg) : version(0), message_number(0), message(""), type(MsgReturnType::NoAnswerNeeded) { 
+	Message() : message(""), operation(std::string("0")), version(0), message_number(0), 
+		type(MsgReturnType::NoAnswerNeeded) { ; }
+	Message(MsgReturnType t, std::string msg) : version(0), operation(std::string("0")), 
+		message_number(0), type(t), message(msg) { ; }
+	Message(std::string msg) : version(0), operation(std::string("0")), 
+		message_number(0), type(MsgReturnType::NoAnswerNeeded), message(msg) { ; }
+	Message(zmq::message_t& msg) : version(0), operation(std::string("0")), message_number(0), 
+		message(""), type(MsgReturnType::NoAnswerNeeded) { 
 		message_from_zmq(msg); 
 	}
 	

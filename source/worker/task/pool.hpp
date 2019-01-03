@@ -9,6 +9,7 @@
 #include "operation_pool.hpp"
 #include "operation_functions.hpp"
 #include "task.hpp"
+#include "task_list.hpp"
 #include "../resource/interface/resource_manager.hpp"
 #include "../network/interfaces/networker.hpp"
 
