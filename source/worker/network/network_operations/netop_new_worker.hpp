@@ -8,7 +8,7 @@ class netop_new_worker : public network_operation_functor {
 public:
 	void operator() (Message * msg, Networker * mailbox, Operation::OperationPool * op_pool, 
 		Resource::ResourceManager * rm, NetworkOperationList * nol) {
-		std::cout << "New Worker !" << std::endl;
+		Misc::ProtectedOut::out(std::string("New Worker !"));
 	}
 };
 };

@@ -6,6 +6,7 @@
 
 #include "operations/get_number_lines_file.hpp"
 #include "operations/count_occurences.hpp"
+#include "operations/math/add_2ints.hpp"
 
 /*
 class operation_functor {

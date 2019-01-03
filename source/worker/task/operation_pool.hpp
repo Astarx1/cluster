@@ -1,7 +1,7 @@
 #ifndef OPERATION_POOL_HPP
 #define OPERATION_POOL_HPP
 
-#include "../resource/resource_manager.hpp"
+#include "../resource/interface/resource_manager.hpp"
 
 namespace Network {
 class Networker;

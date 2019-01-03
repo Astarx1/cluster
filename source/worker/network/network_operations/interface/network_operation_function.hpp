@@ -3,7 +3,7 @@
 
 #include "../../interfaces/networker.hpp"
 #include "../../interfaces/message.hpp"
-#include "../../../resource/resource_manager.hpp"
+#include "../../../resource/interface/resource_manager.hpp"
 #include "../../../task/operation_pool.hpp"
 
 

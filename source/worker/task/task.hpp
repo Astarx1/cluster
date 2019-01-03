@@ -7,7 +7,7 @@
 
 #include "operation_functions.hpp"
 #include "operation_pool.hpp"
-#include "../resource/resource_manager.hpp"
+#include "../resource/interface/resource_manager.hpp"
 
 
 namespace Operation {
@@ -44,6 +44,9 @@ public:
 
 		operation_functor * sowc = new SendOccurencesWordCount();
 		m_operations.insert(std::pair<std::string, operation_functor *>("SendOccurencesWordCount", sowc));
+
+		operation_functor * add2ints = new Math::Add2Ints();
+		m_operations.insert(std::pair<std::string, operation_functor *>("MathAdd2Ints", add2ints));
 	}
 	~TaskList() { 
 		// TODO : I have a small memory leak there, I should free functors before exiting program

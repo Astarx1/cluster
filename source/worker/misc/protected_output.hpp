@@ -7,13 +7,14 @@ namespace Misc {
 class ProtectedOut {
 public:
 	static void out(const std::string& in) {
-		ProtectedOut::no_double.lock();
+		Misc::ProtectedOut::no_double.lock();
 		std::cout << in << std::endl;
-		ProtectedOut::no_double.unlock();
+		Misc::ProtectedOut::no_double.unlock();
 	}
 
 	static std::mutex no_double;
 };
+std::mutex ProtectedOut::no_double;
 };
 
 #endif

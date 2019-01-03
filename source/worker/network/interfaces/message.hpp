@@ -1,6 +1,11 @@
 #ifndef MESSAGE_HPP
 #define MESSAGE_HPP
 
+#include <zmq.hpp>
+
+#include "structures/address.hpp"
+
+
 namespace Network {
 enum MsgReturnType {
 	NoAnswerNeeded = 0,

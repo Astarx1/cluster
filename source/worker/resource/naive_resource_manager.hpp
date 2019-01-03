@@ -1,28 +1,20 @@
-#ifndef RESOURCE_MANAGER_HPP
-#define RESOURCE_MANAGER_HPP
+#ifndef NAIVE_RESOURCE_MANAGER_HPP
+#define NAIVE_RESOURCE_MANAGER_HPP
+
 #include <string>
 #include <map>
 #include <deque>
 
+#include "interface/resource_manager.hpp"
 #include "../network/interfaces/message.hpp"
 
 namespace Resource {
-typedef int resource_cursor_type;
-typedef std::map<std::string, resource_cursor_type> resource_grape_type;
-
-enum internal_type {
-	Int = 0,
-	String = 1,
-	Grape = 2,
-	IntArray = 3,
-	NetMessage = 4,
-	None = 5
-};
-
-class ResourceManager {
+class NaiveResourceManager : public ResourceManager{
 public:
-	ResourceManager() { 
+	NaiveResourceManager() { 
 		m_cursor = 0; 
+	}
+	~NaiveResourceManager() { 
 	}
 
 	resource_cursor_type add_value(int value) {

@@ -60,7 +60,10 @@ public:
 			        Message smessage(introduction);
 			        workers.push_back(smessage.message);
 	        		std::cout << "New worker : " << smessage.author.adr << std::endl;
-	        		send(Address(smessage.author.adr), Message(std::string("New worker !")), true);
+
+	        		Message op_test(std::string("Add2Ints 10 5"));
+	        		op_test.operation = std::string("331");
+	        		send(Address(smessage.author.adr), op_test, true);
 			    }
 			    catch (...) {
 			    	std::cout << "Error when adding new worker" << std::endl;

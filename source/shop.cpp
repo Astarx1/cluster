@@ -1,7 +1,8 @@
 #include <iostream>
+
+#include "worker/resource/naive_resource_manager.hpp"
 #include "worker/network/MailBox.hpp"
 #include "worker/task/pool.hpp"
-
 
 int main (int argc, char *argv[]){
     std::string master_pub;
@@ -21,7 +22,7 @@ int main (int argc, char *argv[]){
     }
 
     Network::MailBox shop(master_pub, master_pull, local_port);
-    Resource::ResourceManager rm;
+    Resource::NaiveResourceManager rm;
     Operation::ThreadPool tp(rm);
     tp.connect_mailbox(&shop);
 

@@ -9,7 +9,7 @@
 #include "operation_pool.hpp"
 #include "operation_functions.hpp"
 #include "task.hpp"
-#include "../resource/resource_manager.hpp"
+#include "../resource/interface/resource_manager.hpp"
 #include "../network/interfaces/networker.hpp"
 
 
@@ -58,7 +58,7 @@ public:
 		is_running = true;
 
 		if(!mailbox_connected) {
-			std::cout << "Please connect mailbox" << std::endl;
+			Misc::ProtectedOut::out(std::string("Please connect mailbox"));
 			throw std::string("Error !");
 		}
 		for(int i = 0; i < nb_workers; i++) {

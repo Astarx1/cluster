@@ -22,45 +22,33 @@ A (hopefully) unique number among all messages to identify the message. Collisio
 
 [OperationID] :
 
-A value of the operation concerned. A few are reserved :
-- 0 : kill computations
-- 1 : start computations
-- 2 : a new shop has been opened :
-	- 20 : A shop ask for market authorization
-	- 21 : Market welcomes a new open shop
-- 4 : Shop Status to send :
-	- 40 : Liveliness heartbeat
-- 5 : Data :
-	- 50 : A shop is selling data
-	- 51 : A shop is buying data
-- 6 : Operations :
-	- 60 : A new task is offered
-	- 61 : A shop has accepted a task
-- 7 : Secure message
-	- 70 : Secure Handshake (authentification + key exchange)
-	- 71 : [Data] contains the message to decrypt 
-
-
-Cluster Definition example
-machines:
-	- name: PC1
-	  user: dummy_user
-	  password: dummy_pwd
-	  ip: 192.168.1.10
-	  services:
-	  	- name: master
-	  	  publish_port: 5550
-	  	  port: 5551
-	  	  master: true
-	    - name: worker1
-	  	  port: 5552
-	- name: PC2
-	  user: dummy_user
-	  password: dummy_pwd
-	  ip: 192.168.1.11
-	  services:
-	    - name: worker1
-	  	  port: 5552
-	    - name: worker2
-	  	  port: 5553
-
+The network operation concerned. A few are reserved (not implemented yet !) :
+- 0 : Computations
+	- 00 : kill computations
+	- 01 : start computations
+- 1 : Network life :
+	- 10 : Market life
+		- 100 : A shop ask for market authorization
+		- 101 : Market welcomes a new open shop
+	- 11 : Agreement protocole
+	- 12 : Liveliness heartbeat
+- 2 : Data :
+	- 20 : A shop is selling data
+	- 21 : A shop is buying data
+- 3 : Tasks :
+	- 30 : A new task is offered
+	- 31 : A shop has accepted a task
+	- 32 : A task is no longer available
+	- 33 : Do task
+		- 330 : Other tasks
+		- 331 : Math Task
+		- 332 : Data Acquisition Task
+		- 333 : Data Structure Task
+- 4 : Secure message
+	- 40 : Secure Handshake (authentification + key exchange)
+	- 41 : [Data] contains the message to decrypt 
+	- 42 : [Data] contains the message to authentify 
+- 5 : State Agreement
+	- 50 : State Description
+		- 500 : (Answer) State accepted 
+		- 500 : (Answer) State refused 

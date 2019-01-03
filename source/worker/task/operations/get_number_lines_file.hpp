@@ -1,7 +1,8 @@
 #ifndef OPERATION_GET_NB_LINE_FILE_HPP
 #define OPERATION_GET_NB_LINE_FILE_HPP
+
 #include "interface/operation_function.hpp"
-#include "../../resource/resource_manager.hpp"
+#include "../../resource/interface/resource_manager.hpp"
 #include "../../network/interfaces/networker.hpp"
 
 #include <iostream>
@@ -16,7 +17,7 @@ public:
 		Resource::ResourceManager * rm, Network::Networker * communications, 
 		OperationPool * operation_pool) {
 		std::string s;
-		std::cout << "Operation GetNumberLineFile : Starting processing" << std::endl;
+		Misc::ProtectedOut::out(std::string("Operation GetNumberLineFile : Starting processing"));
 		int& sTotal = rm->get_int_resource(output);
 
 		std::ifstream in;

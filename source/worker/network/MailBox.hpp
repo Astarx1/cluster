@@ -21,27 +21,27 @@ public:
 		read_market = master_pub;
 		send_market = master_pull;
 
-		std::cout << "Creating socket ZMQ_SUB connecting to '" << read_market << "'" << std::endl;
+		Misc::ProtectedOut::out(std::string("Creating socket ZMQ_SUB connecting to '" + read_market + "'"));
 		sockets.insert(std::pair<std::string,zmq::socket_t>(read_market, zmq::socket_t(context, ZMQ_SUB)));
 		(sockets.find(read_market)->second).connect(read_market);
 		(sockets.find(read_market)->second).setsockopt(ZMQ_SUBSCRIBE, "", 0);
-		std::cout << "Ok!" << std::endl;
+		Misc::ProtectedOut::out(std::string("socket ZMQ_SUB to master : Ok!"));
 
-		std::cout << "Creating socket ZMQ_PUSH connecting to '" << send_market << "'" << std::endl;
+		Misc::ProtectedOut::out(std::string("Creating socket ZMQ_PUSH connecting to '" + send_market + "'"));
 		sockets.insert(std::pair<std::string,zmq::socket_t>(send_market, zmq::socket_t(context, ZMQ_PUSH)));
 		(sockets.find(send_market)->second).connect(send_market);
-		std::cout << "Ok!" << std::endl;
+		Misc::ProtectedOut::out(std::string("socket ZMQ_PUSH to master : Ok!"));
 		
-		std::cout << "Creating socket ZMQ_PUB binding to '" << m_me.adr << "'" << std::endl;
+		Misc::ProtectedOut::out(std::string("Creating socket ZMQ_PUB binding to '" + m_me.adr + "'"));
 		sockets.insert(std::pair<std::string,zmq::socket_t>(m_me.adr, zmq::socket_t(context, ZMQ_PUB)));
 		(sockets.find(m_me.adr)->second).bind("tcp://*:" + local_port);
-		std::cout << "Ok!" << std::endl;
+		Misc::ProtectedOut::out(std::string("socket ZMQ_PUB : Ok!"));
 
 		open_shop();
 
-		std::cout << "Sending handshake to " << master_pull << std::endl;
+		Misc::ProtectedOut::out(std::string("Sending handshake to " + master_pull));
 	    send(Address(send_market), Message(std::string("tcp://localhost:5552")));
-	    std::cout << "Handsake sent" << std::endl;
+	    Misc::ProtectedOut::out(std::string("Handsake sent"));
 
 	    wait_ms = 10;
 	}
@@ -51,7 +51,7 @@ public:
 	}
 	
 	void open_shop() {
-		std::cout << "Getting into the market" << std::endl;
+		Misc::ProtectedOut::out(std::string("Getting into the market"));
 		read_offers = true;
 		market_mng_thread = std::thread(&MailBox::answer_offers, this);
 		mailbox_mng_thread = std::thread(&MailBox::check_own_box, this);
@@ -69,7 +69,7 @@ public:
 		int val = -1;
 	  	zmq::message_t introduction;
 
-	  	std::cout << "Answering offers published on '" << read_market << "'" << std::endl;
+	  	Misc::ProtectedOut::out(std::string("Answering offers published on '" + read_market + "'"));;
 
 		while(read_offers) {
 	        try {
@@ -79,19 +79,19 @@ public:
 		    	val = -1;
 		    }
 	        if (val >= 0 && introduction.size() > 0) {
-	        	std::cout << "-- Worker -- New market offer" << std::endl;
+	        	Misc::ProtectedOut::out(std::string("-- Worker -- New market offer"));;
 	        	try {
 			        Message smessage(introduction);
-	        		std::cout << "-- Worker -- Operation : '" << smessage.operation << "'" << std::endl;
+	        		Misc::ProtectedOut::out(std::string("-- Worker -- Operation : '" + smessage.operation + "'"));
 			        network_operation_functor * op2do = net_op_list.get_operation(smessage.operation);
-	        		std::cout << "-- Worker -- Launching Operation" << std::endl;
+	        		Misc::ProtectedOut::out(std::string("-- Worker -- Launching Operation"));
 			        (*op2do)(&smessage, this, m_operation_pool, m_operation_pool->get_resource_manager(), &net_op_list);
-			        std::cout << "Actions done" << std::endl;
+			        Misc::ProtectedOut::out(std::string("Actions done"));
 			        //std::string smessage(static_cast<char*>(introduction.data()), introduction.size());
 	        		//std::cout << "New worker : " << smessage << std::endl;
 			    }
 			    catch (...) {
-			    	std::cout << "Error when adding new tasks" << std::endl;
+			    	Misc::ProtectedOut::out(std::string("Error when adding new tasks"));
 			    }
 		  	}
 			usleep(wait_ms);
@@ -102,7 +102,7 @@ public:
 		int val = -1;
 	  	zmq::message_t introduction;
 
-	  	std::cout << "Reading Own Mailbox '" << m_me.adr << "'" <<  std::endl;
+	  	Misc::ProtectedOut::out(std::string("Reading Own Mailbox"));
 
 		while(read_offers) {
 	        try {
@@ -112,7 +112,7 @@ public:
 		    	val = -1;
 		    }
 	        if (val >= 0 && introduction.size() > 0) {
-	        	std::cout << "Reading personnal mailbox" << std::endl;
+	        	Misc::ProtectedOut::out(std::string("Message personnal mailbox"));
 	        	try {
 			        Message smessage(introduction);
 			        network_operation_functor * op2do = net_op_list.get_operation(smessage.operation);
@@ -122,7 +122,7 @@ public:
 	        		//std::cout << "New worker : " << smessage << std::endl;
 			    }
 			    catch (...) {
-			    	std::cout << "Error when adding new tasks" << std::endl;
+			    	Misc::ProtectedOut::out(std::string("Error when adding new tasks"));
 			    }
 		  	}
 			usleep(wait_ms);
@@ -136,7 +136,7 @@ public:
 			std::string msg2send = msg.construct_message();
 		    zmq::message_t message(msg2send.size());
 		    memcpy(message.data(), msg2send.c_str(), msg2send.size());
-		    std::cout << "Mailbox : Sending '" << msg2send << "' to '" << adr.name << "'" << std::endl;
+		    Misc::ProtectedOut::out(std::string("Mailbox : Sending '" + msg2send + "' to '" + adr.name + "'"));
 			(sockets.find(adr.name)->second).send(message);
 			return Message();
 		}
