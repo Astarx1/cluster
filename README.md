@@ -19,13 +19,17 @@ TODO :
 		- Separation declarations/definitions
 		- Inclusions refactoring (it is a HUGE mess)
 		- CMake build
+	- Compile with -Wall, without warnings (it is Ok, just -Wreorder error remains)
 - Python Bindings (especially in MLManagement)
 	- Link to mapreduce paradigm, I can try to hack my way into it https://stackoverflow.com/questions/11016078/is-it-possible-to-create-a-function-dynamically-during-runtime-in-c
 	- The best solution remains to manipulate data structures even if it be less flexible
-- Task dependencies management (in progress) > Essential for load management
 - Memory management :
+	- Task dependencies management (in progress) > Essential for load management
 	- Virtual/Physical Memory management > Near-to Essential for real load management
-	- Collision prevention between workers for data shared > Essential 
+	- Collision prevention between workers for data shared > Essential
+	- Going for a faster memory pool structure
+- Getting result from master
+	- IPC communication in case of localhost
 - Mailbox shared between multiple thread to add more if needed (like during a data transfer)
 - File Transfer : 
 	- Use a shared file system like HDFS with a shared hashTable
@@ -40,6 +44,8 @@ TODO :
 	- Acknowledgement support
 	- Message answer support
 	- Make a better use of topic system provided by ZMQ Publish/Subscribe in order to filter out unintersting messages with better performances (reduce the need to parse messages on an application level)
+- Better Error management
+	- Including input check
 - Better non-concurrency between workers support ? Master should have the last word but nonetheless, it seems quite shaky
 	- Paxos-like algorithm for decision ? (seems overkill)
 - Communication securisation
