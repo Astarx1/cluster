@@ -9,11 +9,19 @@ Message sent :
 
 Message Template version v1 : 
 "[MessageVersion],[AuthorID],[ReceiverID],[MessageID],[AckNumber],[OperationID],[Data]"
+
 [MessageID] :
+
 A (hopefully) unique number among all messages to identify the message. Collision being not vary harmful in the long term but being potentially harmful in the short term, a random integer in the whole range of integer is recommanded. 
+
+
 [Acknumber] :
+
 0 or 1 if the author expects a confirmation of the message reception, in which case the receiver will send the same message with an acknowledge number of 2, with the operation ID and the data. A value of 0 means that no response is expected.
+
+
 [OperationID] :
+
 A value of the operation concerned. A few are reserved :
 - 0 : kill computations
 - 1 : start computations
